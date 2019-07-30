@@ -3,8 +3,6 @@ package wolox.training.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,7 +63,7 @@ public class Book {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "books")
-    private Set<Users> user = new HashSet<>();
+    private Set<User> user = new HashSet<>();
 
     public String getGenre() {
         return genre;
@@ -143,7 +141,7 @@ public class Book {
         return id;
     }
 
-    public Set<Users> getUser() {
-        return (Set<Users>) Collections.unmodifiableSet(user);
+    public Set<User> getUser() {
+        return (Set<User>) Collections.unmodifiableSet(user);
     }
 }

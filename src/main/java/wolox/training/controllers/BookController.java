@@ -44,7 +44,7 @@ public class BookController {
     @PutMapping("/{id}")
     public Book update(@RequestBody Book book, @PathVariable Long id)
         throws BookIdMismatchException, BookNotFoundException {
-        if (book.getId() != id)
+        if (book.getId().equals(id))
             throw new BookIdMismatchException();
         bookRepository.findById(id)
             .orElseThrow(BookNotFoundException::new);

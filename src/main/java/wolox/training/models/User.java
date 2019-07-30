@@ -3,8 +3,6 @@ package wolox.training.models;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,17 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNonOwnedException;
 
-@Entity
-public class Users {
-    public Users() {
+@Entity(name="Users")
+public class User {
+    public User() {
         // default
     }
 
@@ -44,10 +40,6 @@ public class Users {
     private LocalDate birthdate;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "book_users",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "users_id",
-            referencedColumnName = "id"))
     private Set<Book> books = new HashSet<>();
 
     public String getUsername() {
