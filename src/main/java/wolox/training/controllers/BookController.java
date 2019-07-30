@@ -74,7 +74,7 @@ public class BookController {
     )
     public Book update(@RequestBody Book book, @ApiParam(value = "book id", required = true) @PathVariable Long id)
         throws BookIdMismatchException, BookNotFoundException {
-        if (book.getId() != id)
+        if (book.getId().equals(id))
             throw new BookIdMismatchException();
         bookRepository.findById(id)
             .orElseThrow(BookNotFoundException::new);
