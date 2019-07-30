@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.google.common.base.Preconditions;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ public class User {
     }
 
     public void setUsername(String username) {
+        Preconditions.checkNotNull(username);
         this.username = username;
     }
 
@@ -55,6 +57,7 @@ public class User {
     }
 
     public void setName(String name) {
+        Preconditions.checkNotNull(name);
         this.name = name;
     }
 
@@ -63,6 +66,8 @@ public class User {
     }
 
     public void setBirthdate(LocalDate birthdate) {
+        Preconditions.checkNotNull(birthdate);
+        Preconditions.checkArgument(birthdate.isBefore(LocalDate.now()),"Invalid date");
         this.birthdate = birthdate;
     }
 
@@ -71,6 +76,7 @@ public class User {
     }
 
     public Book addBook(Book book) throws BookAlreadyOwnedException {
+        Preconditions.checkNotNull(book);
         if(books.contains(book))
             throw new BookAlreadyOwnedException();
         books.add(book);
@@ -78,6 +84,7 @@ public class User {
     }
 
     public void deleteBook(Book book) throws BookNonOwnedException {
+        Preconditions.checkNotNull(book);
         if(!books.contains(book))
             throw new BookNonOwnedException();
         books.remove(book);

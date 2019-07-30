@@ -1,6 +1,7 @@
 package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -84,6 +85,7 @@ public class Book {
     }
 
     public void setGenre(String genre) {
+        Preconditions.checkNotNull(genre);
         this.genre = genre;
     }
 
@@ -91,7 +93,8 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(String author){
+        Preconditions.checkNotNull(author);
         this.author = author;
     }
 
@@ -100,6 +103,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
+        Preconditions.checkNotNull(title);
         this.title = title;
     }
 
@@ -108,6 +112,7 @@ public class Book {
     }
 
     public void setImage(String image) {
+        Preconditions.checkNotNull(image);
         this.image = image;
     }
 
@@ -116,6 +121,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
+        Preconditions.checkNotNull(subtitle);
         this.subtitle = subtitle;
     }
 
@@ -124,6 +130,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
+        Preconditions.checkNotNull(publisher);
         this.publisher = publisher;
     }
 
@@ -132,6 +139,7 @@ public class Book {
     }
 
     public void setYear(String year) {
+        Preconditions.checkNotNull(year);
         this.year = year;
     }
 
@@ -140,6 +148,8 @@ public class Book {
     }
 
     public void setAges(Integer ages) {
+        Preconditions.checkNotNull(ages);
+        Preconditions.checkArgument(ages>0,"It must be positive");
         this.ages = ages;
     }
 
@@ -148,6 +158,7 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+        Preconditions.checkNotNull(isbn);
         this.isbn = isbn;
     }
 
