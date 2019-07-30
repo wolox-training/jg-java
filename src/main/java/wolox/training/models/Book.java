@@ -5,13 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class Book {
 
+    public Book() {
+        // default
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "BOOK_SEQ")
+    @SequenceGenerator(name = "BOOK_SEQ", sequenceName = "BOOK_SEQ")
     private Long id;
 
     @Column(nullable = false)
@@ -46,7 +52,7 @@ public class Book {
     @NotNull
     private Integer ages;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull
     private String isbn;
 

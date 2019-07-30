@@ -27,8 +27,8 @@ public class BookController {
     private BookRepository bookRepository;
 
     @GetMapping("/title/{bookTitle}")
-    public Book findByTitle(@PathVariable String bookTitle) {
-        return bookRepository.findByTitle(bookTitle);
+    public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException {
+        return bookRepository.findByTitle(bookTitle).orElseThrow(BookNotFoundException::new);
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id)
+    public Book update(@RequestBody Book book, @PathVariable Long id)
         throws BookIdMismatchException, BookNotFoundException {
         if (book.getId() != id) {
             throw new BookIdMismatchException();
