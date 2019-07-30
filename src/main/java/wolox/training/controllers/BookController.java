@@ -1,5 +1,10 @@
 package wolox.training.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +21,7 @@ import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
+@Api
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -24,25 +30,49 @@ public class BookController {
     private BookRepository bookRepository;
 
     @GetMapping("/title/{bookTitle}")
-    public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException {
+    @ApiOperation(value = "given a title return a book", response = Book.class)
+    @ApiResponses(
+        value = {@ApiResponse(code = 200, message = "Book found"),
+            @ApiResponse(code = 404, message = "Book not found")
+        }
+    )
+    public Book findByTitle(@ApiParam(value = "book title", required = true) @PathVariable String bookTitle) throws BookNotFoundException {
         return bookRepository.findByTitle(bookTitle).orElseThrow(BookNotFoundException::new);
     }
 
     @PostMapping
+    @ApiOperation(value = "create a book", response = Book.class)
+    @ApiResponses(
+        value = {@ApiResponse(code = 201, message = "Book created")
+        }
+    )
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) throws BookNotFoundException {
+    @ApiOperation(value = "delete a book", response = Book.class)
+    @ApiResponses(
+        value = {@ApiResponse(code = 200, message = "Book deleted"),
+            @ApiResponse(code = 404, message = "Book not found")
+        }
+    )
+    public void delete(@ApiParam(value = "book id", required = true) @PathVariable Long id) throws BookNotFoundException {
         bookRepository.findById(id)
             .orElseThrow(BookNotFoundException::new);
         bookRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
-    public Book update(@RequestBody Book book, @PathVariable Long id)
+    @ApiOperation(value = "update a book", response = Book.class)
+    @ApiResponses(
+        value = {@ApiResponse(code = 200, message = "Book updated"),
+            @ApiResponse(code = 404, message = "Book not found"),
+            @ApiResponse(code = 404, message = "Bad id")
+        }
+    )
+    public Book update(@RequestBody Book book, @ApiParam(value = "book id", required = true) @PathVariable Long id)
         throws BookIdMismatchException, BookNotFoundException {
         if (book.getId() != id)
             throw new BookIdMismatchException();

@@ -1,6 +1,9 @@
 package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@ApiModel(description = "Books model")
 public class Book {
 
     public Book() {
@@ -27,42 +31,52 @@ public class Book {
     @SequenceGenerator(name = "BOOK_SEQ", sequenceName = "BOOK_SEQ")
     private Long id;
 
+    @ApiModelProperty(notes = "genre", required = true, example = "Horror")
     @Column(nullable = false)
     @NotNull
     private String genre;
 
+    @ApiModelProperty(notes = "author", required = true, example = "Stephen King")
     @Column(nullable = false)
     @NotNull
     private String author;
 
+    @ApiModelProperty(notes = "title", required = true, example = "IT")
     @Column(nullable = false)
     @NotNull
     private String title;
 
+    @ApiModelProperty(notes = "image", required = true, example = "url")
     @Column(nullable = false)
     @NotNull
     private String image;
 
+    @ApiModelProperty(notes = "subtitle", required = true)
     @Column(nullable = false)
     @NotNull
     private String subtitle;
 
+    @ApiModelProperty(notes = "publisher", required = true)
     @Column(nullable = false)
     @NotNull
     private String publisher;
 
+    @ApiModelProperty(notes = "year", required = true, example = "1986")
     @Column(nullable = false)
     @NotNull
     private String year;
 
+    @ApiModelProperty(notes = "ages", required = true)
     @Column(nullable = false)
     @NotNull
     private Integer ages;
 
+    @ApiModelProperty(notes = "isbn", required = true)
     @Column(nullable = false, unique = true)
     @NotNull
     private String isbn;
 
+    @ApiModelProperty(notes = "list of users")
     @JsonIgnore
     @ManyToMany(mappedBy = "books")
     private Set<Users> user = new HashSet<>();
