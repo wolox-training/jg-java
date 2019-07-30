@@ -69,7 +69,7 @@ public class BookController {
     @ApiResponses(
         value = {@ApiResponse(code = 200, message = "Book updated"),
             @ApiResponse(code = 404, message = "Book not found"),
-            @ApiResponse(code = 404, message = "Bad id")
+            @ApiResponse(code = 400, message = "Bad id")
         }
     )
     public Book update(@RequestBody Book book, @ApiParam(value = "book id", required = true) @PathVariable Long id)
