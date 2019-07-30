@@ -1,10 +1,17 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
@@ -55,6 +62,10 @@ public class Book {
     @Column(nullable = false, unique = true)
     @NotNull
     private String isbn;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "books")
+    private Set<Users> user = new HashSet<>();
 
     public String getGenre() {
         return genre;
@@ -130,5 +141,9 @@ public class Book {
 
     public Long getId() {
         return id;
+    }
+
+    public Set<Users> getUser() {
+        return (Set<Users>) Collections.unmodifiableSet(user);
     }
 }
