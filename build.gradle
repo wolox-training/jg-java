@@ -35,5 +35,6 @@ dependencies {
 	testCompile('org.mockito:mockito-junit-jupiter:2.23.0')
 	testCompile("com.h2database:h2")
 	implementation 'org.apache.commons:commons-lang3:3.6'
+	compile 'org.json:json:20171018'
 }
 
