@@ -7,25 +7,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.Optional;
-import javafx.application.Application;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import wolox.training.TrainingApplication;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.models.Book;
 import wolox.training.models.User;
@@ -33,8 +24,8 @@ import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
-public class UserControllerTest {
+@WebMvcTest(BookController.class)
+public class BookControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,6 +34,7 @@ public class UserControllerTest {
     private UserRepository mockUserRepository;
     @MockBean
     private BookRepository mockBookRepository;
+
     private User oneTestUser;
     private Book oneTestBook;
 
@@ -70,45 +62,23 @@ public class UserControllerTest {
     }
 
     @Test
-    public void whenFindByUsernameWhichExists_thenUserIsReturned() throws Exception {
-        Mockito.when(mockUserRepository.findByUsername(oneTestUser.getUsername()))
-            .thenReturn(Optional.of(oneTestUser));
-        mockMvc.perform(get("/api/users/username/username").contentType(MediaType.APPLICATION_JSON))
+    public void whenFindByTitleWhichExists_thenBookIsReturned() throws Exception {
+        Mockito.when(mockBookRepository.findByTitle(oneTestBook.getTitle()))
+            .thenReturn(Optional.of(oneTestBook));
+        mockMvc.perform(get("/api/books/title/title").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().json(
-                "{ \"id\": 1,\"username\": \"username\",\"name\": \"name\",\"birthdate\":"
-                    + " \"1990-10-10\",\"books\": [ {\"id\": 1,\"genre\": \"genre\",\"author\":"
+                "{\"id\": 1,\"genre\": \"genre\",\"author\":"
                     + " \"author\",\"title\": \"title\",\"image\": \"image\",\"subtitle\": \"subtitle\","
-                    + "\"publisher\": \"publisher\",\"year\": \"1992\",\"ages\": 1,\"isbn\": \"12345678\" }] }"
+                    + "\"publisher\": \"publisher\",\"year\": \"1992\",\"ages\": 1,\"isbn\": \"12345678\"}"
             ));
     }
 
     @Test
-    public void whenFindByUsernameWhichNoyExists_then404IsReturned() throws Exception {
-        mockMvc.perform(get("/api/users/username/username").contentType(MediaType.APPLICATION_JSON))
+    public void whenFindByTitleWhichNoyExists_then404IsReturned() throws Exception {
+        mockMvc.perform(get("/api/books/title/otherTitle").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
     }
-
-    @Test
-    public void whenFindByIdWhichExists_thenUserIsReturned() throws Exception {
-        Mockito.when(mockUserRepository.findById(oneTestUser.getId()))
-            .thenReturn(Optional.of(oneTestUser));
-        mockMvc.perform(get("/api/users/"+ oneTestUser.getId()).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(
-                "{ \"id\": 1,\"username\": \"username\",\"name\": \"name\",\"birthdate\":"
-                    + " \"1990-10-10\",\"books\": [ {\"id\": 1,\"genre\": \"genre\",\"author\":"
-                    + " \"author\",\"title\": \"title\",\"image\": \"image\",\"subtitle\": \"subtitle\","
-                    + "\"publisher\": \"publisher\",\"year\": \"1992\",\"ages\": 1,\"isbn\": \"12345678\" }] }"
-            ));
-    }
-
-    @Test
-    public void whenFindByIdWhichNoyExists_then404IsReturned() throws Exception {
-        mockMvc.perform(get("/api/users/10").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is4xxClientError());
-    }
-
 
     public static void setId(Long id, Object object)
         throws NoSuchFieldException, IllegalAccessException {
@@ -117,6 +87,3 @@ public class UserControllerTest {
         fieldId.set(object, id);
     }
 }
-
-
-

@@ -87,19 +87,24 @@ public class BookTest {
         assertEquals(persistedBook.getYear(), persistedBook.getYear());
         assertEquals(persistedBook.getAges(), persistedBook.getAges());
         assertEquals(persistedBook.getIsbn(), persistedBook.getIsbn());
-
-
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenCreateUserWithOutTitle_ThenThrowException(){
+    public void whenCreateBookWithOutTitle_ThenThrowException(){
         oneTestBook.setTitle(null);
         bookRepository.save(oneTestBook);
     }
 
-    @Test
-    public void whenAddBookToExistingUser_ThenBookIsAdded() throws BookAlreadyOwnedException {
-        oneTestUser.addBook(otherTestBook);
-        assertEquals(oneTestUser.getBooks().size(),2);
+    @Test(expected = IllegalArgumentException.class)
+    public void whenCreateBookWithAgeNegative_ThenThrowException(){
+        oneTestBook.setAges(-5);
+        bookRepository.save(oneTestBook);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenCreateBookWithNonNumericIsbn_ThenThrowException(){
+        oneTestBook.setIsbn("isbn");
+        bookRepository.save(oneTestBook);
+    }
+
 }
