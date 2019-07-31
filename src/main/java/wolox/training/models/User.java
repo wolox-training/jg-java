@@ -48,8 +48,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        Preconditions.checkNotNull(username);
-        this.username = username;
+        this.username = Preconditions.checkNotNull(username);
     }
 
     public String getName() {
@@ -57,8 +56,7 @@ public class User {
     }
 
     public void setName(String name) {
-        Preconditions.checkNotNull(name);
-        this.name = name;
+        this.name = Preconditions.checkNotNull(name);
     }
 
     public LocalDate getBirthdate() {
