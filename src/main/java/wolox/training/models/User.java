@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Preconditions;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -13,12 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNonOwnedException;
 
 @Entity(name="Users")
 public class User {
+
     public User() {
         // default
     }
@@ -42,6 +48,12 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
+
+    @JsonIgnore
+    @Transient
+    @Column(nullable = false)
+    @NotNull
+    private transient String password = (new BCryptPasswordEncoder()).encode("password");
 
     public String getUsername() {
         return username;
@@ -90,5 +102,14 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    @Transient
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
