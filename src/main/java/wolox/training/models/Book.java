@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.*;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @ApiModel(description = "Books model")
@@ -85,8 +87,7 @@ public class Book {
     }
 
     public void setGenre(String genre) {
-        Preconditions.checkNotNull(genre);
-        this.genre = genre;
+        this.genre = Preconditions.checkNotNull(genre);
     }
 
     public String getAuthor() {
@@ -94,8 +95,7 @@ public class Book {
     }
 
     public void setAuthor(String author){
-        Preconditions.checkNotNull(author);
-        this.author = author;
+        this.author = Preconditions.checkNotNull(author);
     }
 
     public String getTitle() {
@@ -103,8 +103,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        Preconditions.checkNotNull(title);
-        this.title = title;
+        this.title = Preconditions.checkNotNull(title);
     }
 
     public String getImage() {
@@ -112,8 +111,7 @@ public class Book {
     }
 
     public void setImage(String image) {
-        Preconditions.checkNotNull(image);
-        this.image = image;
+        this.image = Preconditions.checkNotNull(image);
     }
 
     public String getSubtitle() {
@@ -121,8 +119,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
-        Preconditions.checkNotNull(subtitle);
-        this.subtitle = subtitle;
+        this.subtitle = Preconditions.checkNotNull(subtitle);
     }
 
     public String getPublisher() {
@@ -130,8 +127,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        Preconditions.checkNotNull(publisher);
-        this.publisher = publisher;
+        this.publisher = Preconditions.checkNotNull(publisher);
     }
 
     public String getYear() {
@@ -139,8 +135,7 @@ public class Book {
     }
 
     public void setYear(String year) {
-        Preconditions.checkNotNull(year);
-        this.year = year;
+        this.year = Preconditions.checkNotNull(year);
     }
 
     public Integer getAges() {
@@ -158,7 +153,7 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
-        Preconditions.checkNotNull(isbn);
+        Preconditions.checkArgument(StringUtils.isNumeric(isbn));
         this.isbn = isbn;
     }
 
