@@ -78,15 +78,15 @@ public class BookTest {
     @Test
     public void whenCreateBook_ThenBookIsPersisted(){
         Book persistedBook = bookRepository.findByTitle("title").orElse(new Book());
-        assertEquals(persistedBook.getGenre(), persistedBook.getGenre());
-        assertEquals(persistedBook.getAuthor(), persistedBook.getAuthor());
-        assertEquals(persistedBook.getTitle(), persistedBook.getTitle());
-        assertEquals(persistedBook.getImage(), persistedBook.getImage());
-        assertEquals(persistedBook.getSubtitle(), persistedBook.getSubtitle());
-        assertEquals(persistedBook.getPublisher(), persistedBook.getPublisher());
-        assertEquals(persistedBook.getYear(), persistedBook.getYear());
-        assertEquals(persistedBook.getAges(), persistedBook.getAges());
-        assertEquals(persistedBook.getIsbn(), persistedBook.getIsbn());
+        assertEquals(persistedBook.getGenre(), oneTestBook.getGenre());
+        assertEquals(persistedBook.getAuthor(), oneTestBook.getAuthor());
+        assertEquals(persistedBook.getTitle(), oneTestBook.getTitle());
+        assertEquals(persistedBook.getImage(), oneTestBook.getImage());
+        assertEquals(persistedBook.getSubtitle(), oneTestBook.getSubtitle());
+        assertEquals(persistedBook.getPublisher(), oneTestBook.getPublisher());
+        assertEquals(persistedBook.getYear(), oneTestBook.getYear());
+        assertEquals(persistedBook.getAges(), oneTestBook.getAges());
+        assertEquals(persistedBook.getIsbn(), oneTestBook.getIsbn());
     }
 
     @Test(expected = NullPointerException.class)
