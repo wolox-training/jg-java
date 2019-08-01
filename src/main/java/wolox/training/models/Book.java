@@ -1,6 +1,7 @@
 package wolox.training.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.*;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @ApiModel(description = "Books model")
@@ -84,15 +87,15 @@ public class Book {
     }
 
     public void setGenre(String genre) {
-        this.genre = genre;
+        this.genre = Preconditions.checkNotNull(genre);
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthor(String author){
+        this.author = Preconditions.checkNotNull(author);
     }
 
     public String getTitle() {
@@ -100,7 +103,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Preconditions.checkNotNull(title);
     }
 
     public String getImage() {
@@ -108,7 +111,7 @@ public class Book {
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.image = Preconditions.checkNotNull(image);
     }
 
     public String getSubtitle() {
@@ -116,7 +119,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+        this.subtitle = Preconditions.checkNotNull(subtitle);
     }
 
     public String getPublisher() {
@@ -124,7 +127,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
-        this.publisher = publisher;
+        this.publisher = Preconditions.checkNotNull(publisher);
     }
 
     public String getYear() {
@@ -132,7 +135,7 @@ public class Book {
     }
 
     public void setYear(String year) {
-        this.year = year;
+        this.year = Preconditions.checkNotNull(year);
     }
 
     public Integer getAges() {
@@ -140,6 +143,8 @@ public class Book {
     }
 
     public void setAges(Integer ages) {
+        Preconditions.checkNotNull(ages);
+        Preconditions.checkArgument(ages>0,"It must be positive");
         this.ages = ages;
     }
 
@@ -148,6 +153,7 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+        Preconditions.checkArgument(StringUtils.isNumeric(isbn));
         this.isbn = isbn;
     }
 
