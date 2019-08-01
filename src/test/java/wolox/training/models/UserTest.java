@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNonOwnedException;
+import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
 import static org.junit.Assert.*;
 
@@ -26,6 +27,9 @@ public class UserTest {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BookRepository bookRepository;
+
     private User oneTestUser;
     private Book oneTestBook;
     private Book otherTestBook;
@@ -43,7 +47,7 @@ public class UserTest {
         oneTestBook.setYear("1992");
         oneTestBook.setAges(1);
         oneTestBook.setIsbn("12345678");
-        setId(1L, oneTestBook);
+        bookRepository.save(oneTestBook);
 
         otherTestBook = new Book();
         otherTestBook.setGenre("genre");
@@ -54,15 +58,15 @@ public class UserTest {
         otherTestBook.setPublisher("publisher");
         otherTestBook.setYear("1992");
         otherTestBook.setAges(1);
-        otherTestBook.setIsbn("12345678");
-        setId(1L, otherTestBook);
+        otherTestBook.setIsbn("123456789");
+        bookRepository.save(otherTestBook);
 
         oneTestUser = new User();
         oneTestUser.setUsername("username");
         oneTestUser.setName("name");
         oneTestUser.setBirthdate(LocalDate.of(1990, 10, 10));
         oneTestUser.addBook(oneTestBook);
-        setId(1L, oneTestUser);
+        userRepository.save(oneTestUser);
     }
 
     public static void setId(Long id, Object object)

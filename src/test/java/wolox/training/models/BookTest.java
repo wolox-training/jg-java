@@ -28,13 +28,12 @@ public class BookTest {
 
     @Autowired
     private BookRepository bookRepository;
-    private User oneTestUser;
     private Book oneTestBook;
     private Book otherTestBook;
 
     @Before
     public void setUp()
-        throws BookAlreadyOwnedException, NoSuchFieldException, IllegalAccessException {
+            throws BookAlreadyOwnedException, NoSuchFieldException, IllegalAccessException {
         oneTestBook = new Book();
         oneTestBook.setGenre("genre");
         oneTestBook.setAuthor("author");
@@ -45,7 +44,7 @@ public class BookTest {
         oneTestBook.setYear("1992");
         oneTestBook.setAges(1);
         oneTestBook.setIsbn("12345678");
-        setId(1L, oneTestBook);
+        bookRepository.save(oneTestBook);
 
         otherTestBook = new Book();
         otherTestBook.setGenre("genre");
@@ -56,15 +55,8 @@ public class BookTest {
         otherTestBook.setPublisher("publisher");
         otherTestBook.setYear("1992");
         otherTestBook.setAges(1);
-        otherTestBook.setIsbn("12345678");
-        setId(1L, otherTestBook);
-
-        oneTestUser = new User();
-        oneTestUser.setUsername("username");
-        oneTestUser.setName("name");
-        oneTestUser.setBirthdate(LocalDate.of(1990, 10, 10));
-        oneTestUser.addBook(oneTestBook);
-        setId(1L, oneTestUser);
+        otherTestBook.setIsbn("123456789");
+        bookRepository.save(otherTestBook);
     }
 
     public static void setId(Long id, Object object)
