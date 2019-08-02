@@ -6,15 +6,24 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wolox.training.exceptions.BadSortException;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
+import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
 import wolox.training.services.OpenLibraryService;
 
@@ -28,6 +37,10 @@ public class BookController {
 
     @Autowired
     private OpenLibraryService openLibraryService;
+
+    private static final String[] array = {"genre", "author", "title", "image", "subtitle", "publisher", "year", "ages", "id"};
+    private static final LinkedList permittedSort = new LinkedList(Arrays.asList(array));
+
 
     @GetMapping("/title/{bookTitle}")
     @ApiOperation(value = "given a title return a book", response = Book.class)
@@ -101,7 +114,15 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> find(@RequestParam(required = false) String publisher, @RequestParam(required = false) String genre, @RequestParam(required = false) String year) {
-        return bookRepository.findByPublisherAndGenreAndYear(publisher,genre,year);
+    public List<Book> getAll(@RequestParam(required = false) String genre, @RequestParam(required = false) String author, @RequestParam(required = false) String title,
+                             @RequestParam(required = false) String image, @RequestParam(required = false) String subtitle, @RequestParam(required = false) String publisher,
+                             @RequestParam(required = false) String year, @RequestParam(required = false) String isbn, @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "id") String sort ) throws BadSortException {
+        if(!permittedSort.contains(sort))
+            throw new BadSortException();
+        Pageable pageable =
+                PageRequest.of(page, 10, Sort.by(sort));
+         return bookRepository.
+                findAll(genre,author,title,image,subtitle,publisher,year,isbn, pageable);
     }
 }
