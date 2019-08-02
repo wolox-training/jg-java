@@ -4,17 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNonOwnedException;
 import wolox.training.exceptions.BookNotFoundException;
@@ -24,6 +14,9 @@ import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -95,5 +88,12 @@ public class UserController {
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
         user.deleteBook(book);
         return userRepository.save(user);
+    }
+
+    @GetMapping
+    public List<User> find(@RequestParam(required = false) String before, @RequestParam(required = false) String after, @RequestParam(required = false) String name) {
+        return userRepository.
+                findByBirthdateBeforeAndAndBirthdateAfterAndNameIgnoreCaseContaining
+                        (LocalDate.parse(before),LocalDate.parse(after),name);
     }
 }
