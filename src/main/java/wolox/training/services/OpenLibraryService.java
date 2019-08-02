@@ -17,6 +17,16 @@ public class OpenLibraryService {
     @Autowired
     private BookRepository bookRepository;
 
+    private static final String TITLE = "title";
+    private static final String SUBTITLE = "subtitle";
+    private static final String PUBLISHER = "publishers";
+    private static final String PUBLISHER_DATE = "publish_date";
+    private static final String NAME = "name";
+    private static final String AUTHOR = "authors";
+    private static final String IMAGE = "cover";
+    private static final String SMALL = "small";
+    private static final String GENRE = "subjects";
+
     public Optional<Book> bookInfo(String isbn) throws Exception {
         try {
             String json = getJSON("https://openlibrary.org/api/books?bibkeys=ISBN:"+ isbn +"&format=json&jscmd=data");
@@ -24,13 +34,13 @@ public class OpenLibraryService {
             obj = obj.getJSONObject("ISBN:"+isbn);
             Book book = new Book();
             book.setIsbn(isbn);
-            book.setTitle(obj.getString("title"));
-            book.setSubtitle(obj.getString("subtitle"));
-            book.setPublisher(obj.getJSONArray("publishers").getJSONObject(0).getString("name"));
-            book.setYear(obj.getString("publish_date"));
-            book.setAuthor(obj.getJSONArray("authors").getJSONObject(0).getString("name"));
-            book.setImage(obj.getJSONObject("cover").getString("small"));
-            book.setGenre(obj.getJSONArray("subjects").getJSONObject(0).getString("name"));
+            book.setTitle(obj.getString(TITLE));
+            book.setSubtitle(obj.getString(SUBTITLE));
+            book.setPublisher(obj.getJSONArray(PUBLISHER).getJSONObject(0).getString(NAME));
+            book.setYear(obj.getString(PUBLISHER_DATE));
+            book.setAuthor(obj.getJSONArray(AUTHOR).getJSONObject(0).getString(NAME));
+            book.setImage(obj.getJSONObject(IMAGE).getString(SMALL));
+            book.setGenre(obj.getJSONArray(GENRE).getJSONObject(0).getString(NAME));
             book.setAges(1);
             bookRepository.save(book);
             return Optional.of(book);
