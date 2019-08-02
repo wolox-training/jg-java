@@ -75,12 +75,12 @@ public class BookControllerTest {
     }
 
     @Test
-    public void whenFindByTitleWhichNoyExists_then404IsReturned() throws Exception {
+    public void whenFindByTitleWhichNotExists_then404IsReturned() throws Exception {
         mockMvc.perform(get("/api/books/title/otherTitle").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
     }
 
-    public static void setId(Long id, Object object)
+    private static void setId(Long id, Object object)
         throws NoSuchFieldException, IllegalAccessException {
         Field fieldId = object.getClass().getDeclaredField("id");
         fieldId.setAccessible(true);

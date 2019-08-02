@@ -46,7 +46,7 @@ public class UserTest {
         oneTestBook.setPublisher("publisher");
         oneTestBook.setYear("1992");
         oneTestBook.setAges(1);
-        oneTestBook.setIsbn("12345678");
+        oneTestBook.setIsbn("23456");
         bookRepository.save(oneTestBook);
 
         otherTestBook = new Book();
@@ -58,18 +58,18 @@ public class UserTest {
         otherTestBook.setPublisher("publisher");
         otherTestBook.setYear("1992");
         otherTestBook.setAges(1);
-        otherTestBook.setIsbn("123456789");
+        otherTestBook.setIsbn("5423");
         bookRepository.save(otherTestBook);
 
         oneTestUser = new User();
-        oneTestUser.setUsername("username");
+        oneTestUser.setUsername("other_fake_username");
         oneTestUser.setName("name");
         oneTestUser.setBirthdate(LocalDate.of(1990, 10, 10));
         oneTestUser.addBook(oneTestBook);
         userRepository.save(oneTestUser);
     }
 
-    public static void setId(Long id, Object object)
+    private static void setId(Long id, Object object)
         throws NoSuchFieldException, IllegalAccessException {
         Field fieldId = object.getClass().getDeclaredField("id");
         fieldId.setAccessible(true);
@@ -79,7 +79,7 @@ public class UserTest {
 
     @Test
     public void whenCreateUser_ThenUserIsPersisted(){
-        User persistedUser = userRepository.findByUsername("username").orElse(new User());
+        User persistedUser = userRepository.findByUsername("other_fake_username").orElse(new User());
         assertEquals(persistedUser.getUsername(), oneTestUser.getUsername());
         assertEquals(persistedUser.getName(), oneTestUser.getName());
         assertEquals(persistedUser.getBirthdate(), oneTestUser.getBirthdate());

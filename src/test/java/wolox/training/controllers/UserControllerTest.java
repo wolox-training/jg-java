@@ -104,13 +104,13 @@ public class UserControllerTest {
     }
 
     @Test
-    public void whenFindByIdWhichNoyExists_then404IsReturned() throws Exception {
+    public void whenFindByIdWhichNotExists_then404IsReturned() throws Exception {
         mockMvc.perform(get("/api/users/10").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
     }
 
 
-    public static void setId(Long id, Object object)
+    private static void setId(Long id, Object object)
         throws NoSuchFieldException, IllegalAccessException {
         Field fieldId = object.getClass().getDeclaredField("id");
         fieldId.setAccessible(true);

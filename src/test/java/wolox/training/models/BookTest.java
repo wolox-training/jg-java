@@ -37,13 +37,13 @@ public class BookTest {
         oneTestBook = new Book();
         oneTestBook.setGenre("genre");
         oneTestBook.setAuthor("author");
-        oneTestBook.setTitle("title");
+        oneTestBook.setTitle("fake_title");
         oneTestBook.setImage("image");
         oneTestBook.setSubtitle("subtitle");
         oneTestBook.setPublisher("publisher");
         oneTestBook.setYear("1992");
         oneTestBook.setAges(1);
-        oneTestBook.setIsbn("12345678");
+        oneTestBook.setIsbn("234");
         bookRepository.save(oneTestBook);
 
         otherTestBook = new Book();
@@ -55,11 +55,11 @@ public class BookTest {
         otherTestBook.setPublisher("publisher");
         otherTestBook.setYear("1992");
         otherTestBook.setAges(1);
-        otherTestBook.setIsbn("123456789");
+        otherTestBook.setIsbn("2345");
         bookRepository.save(otherTestBook);
     }
 
-    public static void setId(Long id, Object object)
+    private static void setId(Long id, Object object)
         throws NoSuchFieldException, IllegalAccessException {
         Field fieldId = object.getClass().getDeclaredField("id");
         fieldId.setAccessible(true);
@@ -69,7 +69,7 @@ public class BookTest {
 
     @Test
     public void whenCreateBook_ThenBookIsPersisted(){
-        Book persistedBook = bookRepository.findByTitle("title").orElse(new Book());
+        Book persistedBook = bookRepository.findByTitle("fake_title").orElse(new Book());
         assertEquals(persistedBook.getGenre(), oneTestBook.getGenre());
         assertEquals(persistedBook.getAuthor(), oneTestBook.getAuthor());
         assertEquals(persistedBook.getTitle(), oneTestBook.getTitle());
