@@ -1,5 +1,6 @@
 package wolox.training.controllers;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -15,11 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import wolox.training.exceptions.BookAlreadyOwnedException;
-import wolox.training.exceptions.BookNonOwnedException;
-import wolox.training.exceptions.BookNotFoundException;
-import wolox.training.exceptions.UserIdMismatchException;
-import wolox.training.exceptions.UserNotFoundException;
+import org.springframework.web.client.HttpClientErrorException;
+import wolox.training.exceptions.*;
 import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
@@ -51,9 +49,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody User user) {
-        User u = userRepository.save(user);
-        u.setPassword(passwordEncoder.encode(user.getPassword()));
-        return u;
+        return userRepository.save(user);
     }
 
     @DeleteMapping("/{id}")
@@ -66,11 +62,27 @@ public class UserController {
     @PutMapping("/{id}")
     public User update(@RequestBody User user, @PathVariable Long id)
         throws UserIdMismatchException, UserNotFoundException {
-        if (user.getId() != id)
+        if (!user.getId().equals(id))
             throw new UserIdMismatchException();
-        userRepository.findById(id)
+        User u = userRepository.findById(id)
             .orElseThrow(UserNotFoundException::new);
-        return userRepository.save(user);
+        u.setUsername(user.getUsername());
+        u.setName(user.getName());
+        u.setBirthdate(user.getBirthdate());
+        return userRepository.save(u);
+    }
+
+    @PutMapping("/{id}/password")
+    public User update(@RequestBody String passwordBody, @PathVariable Long id, Authentication authentication)
+            throws UserNotFoundException, NotAuthorizedException {
+        JSONObject passwordJson = new JSONObject(passwordBody);
+        String password = passwordJson.getString("password");
+        User u = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        if (!authentication.getName().equals(u.getUsername()))
+            throw new NotAuthorizedException();
+        u.setPassword(password);
+        return userRepository.save(u);
     }
 
     @RequestMapping(value = "/username", method = RequestMethod.GET)

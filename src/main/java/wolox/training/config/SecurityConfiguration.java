@@ -25,6 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestAuthenticationEntryPoint authenticationEntryPoint;
 
+    @Override
     protected void configure(final HttpSecurity http)throws Exception {
         http
             //HTTP Basic authentication
@@ -53,8 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    public void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 

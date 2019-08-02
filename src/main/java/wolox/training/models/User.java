@@ -49,11 +49,9 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
 
-    @JsonIgnore
-    @Transient
     @Column(nullable = false)
     @NotNull
-    private transient String password = (new BCryptPasswordEncoder()).encode("password");
+    private String password;
 
     public String getUsername() {
         return username;
@@ -110,6 +108,8 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Preconditions.checkNotNull(password);
+        Preconditions.checkArgument(password.length() > 5 );
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 }
