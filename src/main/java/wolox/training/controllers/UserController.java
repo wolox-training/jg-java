@@ -121,7 +121,7 @@ public class UserController {
     @GetMapping
     public List<User> find(@RequestParam(required = false) String before, @RequestParam(required = false) String after, @RequestParam(required = false) String name) {
         return userRepository.
-                findByBirthdateBeforeAndAndBirthdateAfterAndNameIgnoreCaseContaining
+                findByBirthdateBetweenAndNameIgnoreCaseContaining
                         (LocalDate.parse(before),LocalDate.parse(after),name);
     }
 }
