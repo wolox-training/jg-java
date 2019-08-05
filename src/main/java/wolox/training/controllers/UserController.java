@@ -132,7 +132,7 @@ public class UserController {
         if(!permittedSort.contains(sort))
             throw new BadSortException();
         return userRepository.
-                findByBirthdateBeforeAndAndBirthdateAfterAndNameIgnoreCaseContaining
+                findByBirthdateBetweenAndNameIgnoreCaseContaining
                         (LocalDate.parse(before),LocalDate.parse(after),name, PageRequest.of(page, SIZE, Sort.by(sort)));
     }
 
