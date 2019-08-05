@@ -38,8 +38,8 @@ public class BookController {
     @Autowired
     private OpenLibraryService openLibraryService;
 
-    private static final String[] array = {"genre", "author", "title", "image", "subtitle", "publisher", "year", "ages", "id"};
-    private static final LinkedList permittedSort = new LinkedList(Arrays.asList(array));
+    private static final int SIZE = 10;
+    private static final List permittedSort = Arrays.asList("genre", "author", "title", "image", "subtitle", "publisher", "year", "ages", "id");
 
 
     @GetMapping("/title/{bookTitle}")
@@ -120,9 +120,7 @@ public class BookController {
                              @RequestParam(defaultValue = "id") String sort ) throws BadSortException {
         if(!permittedSort.contains(sort))
             throw new BadSortException();
-        Pageable pageable =
-                PageRequest.of(page, 10, Sort.by(sort));
          return bookRepository.
-                findAll(genre,author,title,image,subtitle,publisher,year,isbn, pageable);
+                findAll(genre,author,title,image,subtitle,publisher,year,isbn, PageRequest.of(page, SIZE, Sort.by(sort)));
     }
 }

@@ -49,8 +49,9 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private String[] array = {"name", "username", "id", "birthdate"};
-    private LinkedList permittedSort = new LinkedList(Arrays.asList(array));
+    private static final int SIZE = 10;
+
+    private static final List permittedSort = Arrays.asList("name", "username", "id", "birthdate");
 
     @GetMapping("/username/{username}")
     public User findByUsername(@PathVariable String username) throws UserNotFoundException {
@@ -130,10 +131,9 @@ public class UserController {
                            @RequestParam(defaultValue = "id") String sort, @RequestParam(defaultValue = "0") int page) throws BadSortException {
         if(!permittedSort.contains(sort))
             throw new BadSortException();
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sort));
         return userRepository.
                 findByBirthdateBeforeAndAndBirthdateAfterAndNameIgnoreCaseContaining
-                        (LocalDate.parse(before),LocalDate.parse(after),name, pageable);
+                        (LocalDate.parse(before),LocalDate.parse(after),name, PageRequest.of(page, SIZE, Sort.by(sort)));
     }
 
 
