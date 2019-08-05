@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
-import org.apache.commons.*;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity

@@ -30,5 +30,10 @@ dependencies {
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
+	compileOnly('org.projectlombok:lombok')
+	testCompile 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
+	testCompile('org.mockito:mockito-junit-jupiter:2.23.0')
+	testCompile("com.h2database:h2")
 	implementation 'org.apache.commons:commons-lang3:3.6'
 }
+
