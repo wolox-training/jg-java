@@ -10,5 +10,6 @@ import wolox.training.models.Book;
 public interface BookRepository extends CrudRepository<Book, Long> {
 
     Optional<Book> findByTitle(String title);
+    Optional<Book> findByIsbn(String isbn);
     Optional<Book> findById(Long id);
 }
