@@ -2,6 +2,9 @@ package wolox.training.controllers;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +31,9 @@ import wolox.training.models.Book;
 import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
-
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -44,6 +48,10 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private static final int SIZE = 10;
+
+    private static final List permittedSort = Arrays.asList("name", "username", "id", "birthdate");
 
     @GetMapping("/username/{username}")
     public User findByUsername(@PathVariable String username) throws UserNotFoundException {
@@ -119,9 +127,14 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> find(@RequestParam(required = false) String before, @RequestParam(required = false) String after, @RequestParam(required = false) String name) {
+    public List<User> find(@RequestParam(required = false) String before, @RequestParam(required = false) String after, @RequestParam(required = false) String name,
+                           @RequestParam(defaultValue = "id") String sort, @RequestParam(defaultValue = "0") int page) throws BadSortException {
+        if(!permittedSort.contains(sort))
+            throw new BadSortException();
         return userRepository.
                 findByBirthdateBetweenAndNameIgnoreCaseContaining
-                        (LocalDate.parse(before),LocalDate.parse(after),name);
+                        (LocalDate.parse(before),LocalDate.parse(after),name, PageRequest.of(page, SIZE, Sort.by(sort)));
     }
+
+
 }
